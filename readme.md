@@ -41,3 +41,7 @@ shell> node wsServer.js
 动捕数据仿真在 /webgl 文件夹
 
 cameraWsReal.html
+
+## 调试器配置文件
+
+hoppscotch-personal-collections.json

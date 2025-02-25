@@ -1,0 +1,115 @@
+[
+  {
+    "v": 6,
+    "name": "FAWT",
+    "folders": [],
+    "requests": [
+      {
+        "v": "11",
+        "name": "TS",
+        "method": "POST",
+        "endpoint": "http://localhost:3001/send",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"id\": \"52\",\n  \"msg\": {\"header\":\"TS\",\"type\":\"TS\",\"data\":\"TEST\"}\n}"
+        },
+        "requestVariables": [],
+        "responses": {}
+      },
+      {
+        "v": "11",
+        "name": "ST",
+        "method": "POST",
+        "endpoint": "http://localhost:3001/send",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"id\": \"120\",\n  \"msg\": {\"header\":\"ST\",\"type\":\"ST\",\"data\":null}\n}"
+        },
+        "requestVariables": [],
+        "responses": {}
+      },
+      {
+        "v": "11",
+        "name": "RD",
+        "method": "POST",
+        "endpoint": "http://localhost:3001/send",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"id\": \"20\",\n  \"msg\": {\"header\":\"RD\",\"type\":\"RD\",\"data\":null}\n}"
+        },
+        "requestVariables": [],
+        "responses": {}
+      },
+      {
+        "v": "11",
+        "name": "DT",
+        "method": "POST",
+        "endpoint": "http://localhost:3001/send",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"id\": \"1\",\n  \"msg\": {\"header\":\"DT\",\"type\":\"DT\",\"data\":[239,82,5,90,42,21,240,97,80,220,109,34,164,14,129,209,138,217]}\n}"
+        },
+        "requestVariables": [],
+        "responses": {}
+      },
+      {
+        "v": "11",
+        "name": "TSRST",
+        "method": "GET",
+        "endpoint": "http://localhost:3001/TSRST",
+        "params": [],
+        "headers": [],
+        "preRequestScript": "",
+        "testScript": "",
+        "auth": {
+          "authType": "inherit",
+          "authActive": true
+        },
+        "body": {
+          "contentType": "application/json",
+          "body": "{\n  \"id\": \"1\",\n  \"msg\": {\"header\":\"DT\",\"type\":\"DT\",\"data\":[239,82,5,90,42,21,240,97,80,220,109,34,164,14,129,209,138,217]}\n}"
+        },
+        "requestVariables": [],
+        "responses": {}
+      }
+    ],
+    "auth": {
+      "authType": "none",
+      "authActive": true
+    },
+    "headers": [],
+    "_ref_id": "coll_m78xhjgy_6cce92b6-96ca-44df-837c-bf7722968b0b"
+  }
+]
