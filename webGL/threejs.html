@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Animation</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 100;
+        }
+        #controls button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <button id="playButton">播放</button>
+        <button id="pauseButton">暂停</button>
+        <button id="stopButton">停止</button>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        // 初始化场景、相机和渲染器
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 100000); // 设置 near 和 far 参数
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        camera.up.set(0, 0, 1); // 设置 Z 轴为向上方向
+
+        // 设置渲染器背景颜色为白色
+        renderer.setClearColor(0xffffff);
+
+        // 设置相机位置
+        camera.position.set(5000, 5000, 5000); // 直接设置摄像机位置为 (5000, 5000, 5000) 毫米
+        camera.lookAt(new THREE.Vector3(0, 0, 0)); // 让摄像机看向原点
+
+        // 创建球体材质（灰色）
+        const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+
+        // 存储球体的数组
+        const spheres = [];
+
+        // 添加坐标系
+        const axesHelper = new THREE.AxesHelper(10000); // 坐标轴长度为10000 毫米
+        scene.add(axesHelper);
+
+        // 创建正方体框
+        const boxGeometry = new THREE.BoxGeometry(3000, 3000, 3000);
+        const edgesGeometry = new THREE.EdgesGeometry(boxGeometry);
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFE5E5E5 }); // 网格颜色
+        const boxWireframe = new THREE.LineSegments(edgesGeometry, lineMaterial);
+        boxWireframe.position.set(0, 0, 1500); // 设置立方体框的位置为 (0, 0, 1500) 毫米
+        scene.add(boxWireframe);
+
+        // 创建水平面网格
+        const gridSize = 3000; // 网格大小 毫米
+        const gridStep = 100; // 格宽度为 100 毫米
+        const gridColor = 0xFFE5E5E5; // 网格颜色
+        const gridHelper = new THREE.GridHelper(gridSize, gridSize / gridStep, gridColor, gridColor);
+        gridHelper.rotation.x = Math.PI / 2; // 旋转网格使其水平
+        scene.add(gridHelper);
+
+        // 初始化 OrbitControls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // 启用阻尼效果
+        controls.dampingFactor = 0.25; // 阻尼因子
+        controls.enableZoom = true; // 启用缩放
+        controls.autoRotate = false; // 禁用自动旋转
+
+        // 加载 JSON 数据
+        let data = [];
+        fetch('./output_coordinates_mm.json')
+            .then(response => response.json())
+            .then(jsonData => {
+                data = jsonData;
+                // 创建球体
+                const frame = data[0]; // 使用第一帧来初始化球体
+                ['position', 'Marker1', 'Marker2', 'Marker3', 'Marker4'].forEach(key => {
+                    const sphere = new THREE.Mesh(new THREE.SphereGeometry(20, 32, 32), sphereMaterial);
+                    scene.add(sphere);
+                    spheres.push(sphere);
+                });
+            })
+            .catch(error => console.error('Error loading JSON data:', error));
+
+        // 动画帧索引
+        let frameIndex = 0;
+
+        // 时间戳管理
+        let lastTime = performance.now();
+        const frameDuration = 10; // 10 毫秒，即 100 fps
+
+        // 动画循环
+        function animate(currentTime) {
+            if (!isPaused) {
+                requestAnimationFrame(animate);
+
+                const deltaTime = currentTime - lastTime;
+
+                if (deltaTime >= frameDuration) {
+                    // 更新 OrbitControls
+                    controls.update();
+
+                    // 更新球体位置
+                    const frame = data[frameIndex];
+                    ['position', 'Marker1', 'Marker2', 'Marker3', 'Marker4'].forEach((key, i) => {
+                        const pos = frame[key];
+                        spheres[i].position.set(pos[0], pos[1], pos[2]);
+
+                        // 判断位置并改变球体颜色
+                        if (pos[0] > 1500 || pos[0] < -1500 || pos[1] > 1500 || pos[1] < -1500 || pos[2] > 3000) {
+                            spheres[i].material.color.set(0xff0000); // 设置为红色
+                        } else {
+                            spheres[i].material.color.set(0x888888); // 设置为灰色
+                        }
+                    });
+
+                    // 更新帧索引
+                    frameIndex = (frameIndex + 1) % data.length;
+
+                    // 渲染场景
+                    renderer.render(scene, camera);
+
+                    // 更新时间戳
+                    lastTime = currentTime;
+                }
+            }
+        }
+
+        // 控制动画状态
+        let isPaused = true;
+        let isStopped = false;
+
+        // 播放按钮
+        document.getElementById('playButton').addEventListener('click', () => {
+            if (isStopped) {
+                frameIndex = 0; // 重新开始动画
+                isStopped = false;
+            }
+            isPaused = false;
+            animate(performance.now());
+        });
+
+        // 暂停按钮
+        document.getElementById('pauseButton').addEventListener('click', () => {
+            isPaused = true;
+        });
+
+        // 停止按钮
+        document.getElementById('stopButton').addEventListener('click', () => {
+            isPaused = true;
+            isStopped = true;
+            frameIndex = 0; // 重置帧索引
+            // 重置球体位置到初始位置
+            const frame = data[0];
+            ['position', 'Marker1', 'Marker2', 'Marker3', 'Marker4'].forEach((key, i) => {
+                const pos = frame[key];
+                spheres[i].position.set(pos[0], pos[1], pos[2]);
+            });
+        });
+
+        // 开始动画
+        animate(performance.now());
+    </script>
+</body>
+</html>
