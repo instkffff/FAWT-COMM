@@ -37,6 +37,7 @@
 
         // 添加坐标系
         const axesHelper = new THREE.AxesHelper(10000); // 坐标轴长度为10000 毫米
+        axesHelper.renderOrder = 1; //确保坐标系在最后渲染
         scene.add(axesHelper);
 
         // 创建正方体框
@@ -45,6 +46,7 @@
         const lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFE5E5E5 }); // 网格颜色
         const boxWireframe = new THREE.LineSegments(edgesGeometry, lineMaterial);
         boxWireframe.position.set(0, 0, 1500); // 设置立方体框的位置为 (0, 0, 1500) 毫米
+        boxWireframe.renderOrder = 0; //立方体框在坐标轴之前渲染
         scene.add(boxWireframe);
 
         // 创建水平面网格
@@ -53,6 +55,7 @@
         const gridColor = 0xFFE5E5E5; // 网格颜色
         const gridHelper = new THREE.GridHelper(gridSize, gridSize / gridStep, gridColor, gridColor);
         gridHelper.rotation.x = Math.PI / 2; // 旋转网格使其水平
+        gridHelper.renderOrder = 0;//网格在坐标轴之前渲染
         scene.add(gridHelper);
 
         // 初始化 OrbitControls
