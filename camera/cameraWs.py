@@ -131,7 +131,7 @@ class WebSocketServer:
 
 async def main(argv):
     try:
-        opts, args = getopt.getopt(argv, "hs:", ["server="])
+        opts, _ = getopt.getopt(argv, "hs:", ["server="])  # 使用 _ 表示不使用的返回值
         server_ip = Config.DEFAULT_SERVER_IP
         
         for opt, arg in opts:
