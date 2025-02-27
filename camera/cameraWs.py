@@ -2,11 +2,10 @@ import logging
 from dataclasses import dataclass
 from typing import Optional, Dict, Any
 from nokov.nokovsdk import *
-import time, math, sys, getopt
+import sys, getopt
 import asyncio
 import websockets
 import json
-import pandas as pd
 
 logging.basicConfig(
     level=logging.INFO,
@@ -27,15 +26,15 @@ class NokovCamera:
         self.cur_frame_no: int = 0
         self.client = PySDKClient()
         
-    def data_callback(self, frame_data, user_data) -> Optional[Dict]:
+    def data_callback(self, frame_data, user_data) -> None:  # 修改返回类型为 None
         if frame_data is None:
             logging.warning("Not get the data frame.")
-            return None
+            return
             
         frame = frame_data.contents
         self.cur_frame_no = frame.iFrame
         if self.cur_frame_no == self.pre_frame_no:
-            return None
+            return
 
         self.pre_frame_no = self.cur_frame_no
         
@@ -68,7 +67,6 @@ class NokovCamera:
             frame_data_dict["MarkerSets"].append(markerset_dict)
         
         self.latest_frame_data = frame_data_dict
-        return frame_data_dict
 
     async def start(self, server_ip: str):
         try:
