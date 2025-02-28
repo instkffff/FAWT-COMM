@@ -17,7 +17,7 @@ class Config:
     DEFAULT_SERVER_IP: str = '10.1.1.198'
     WS_HOST: str = 'localhost'
     WS_PORT: int = 8080
-    DATA_SEND_INTERVAL: float = 0.01
+    DATA_SEND_INTERVAL: float = 0.00
 
 class NokovCamera:
     def __init__(self):
