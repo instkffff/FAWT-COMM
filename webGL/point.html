@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Data Table</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr { width: 800px; }
+        th { width: 240px; }
+        #ID { width: 40px; }
+
+
+    </style>
+</head>
+<body>
+    <table id="markerTable">
+        <thead>
+            <tr>
+                <th id="ID">ID</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Z</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 数据行将在这里动态添加 -->
+        </tbody>
+    </table>
+
+    <script>
+        // WebSocket 连接
+        const ws = new WebSocket('ws://localhost:8080');
+
+        ws.onopen = () => {
+            console.log('Connected to WebSocket server');
+        };
+
+        ws.onmessage = (event) => {
+            const frameData = JSON.parse(event.data);
+            updateTable(frameData);
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        ws.onclose = () => {
+            console.log('Disconnected from WebSocket server');
+        };
+
+        // 更新表格
+        function updateTable(frameData) {
+            const markerSets = frameData.MarkerSets;
+            const tableBody = document.querySelector('#markerTable tbody');
+            tableBody.innerHTML = ''; // 清空表格内容
+
+            let idCounter = 1;
+            markerSets.forEach(markerSet => {
+                markerSet.Markers.forEach(marker => {
+                    const row = document.createElement('tr');
+
+                    const idCell = document.createElement('td');
+                    idCell.textContent = idCounter++;
+                    row.appendChild(idCell);
+
+                    const xCell = document.createElement('td');
+                    xCell.textContent = marker.Position[0];
+                    row.appendChild(xCell);
+
+                    const yCell = document.createElement('td');
+                    yCell.textContent = marker.Position[1];
+                    row.appendChild(yCell);
+
+                    const zCell = document.createElement('td');
+                    zCell.textContent = marker.Position[2];
+                    row.appendChild(zCell);
+
+                    tableBody.appendChild(row);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
