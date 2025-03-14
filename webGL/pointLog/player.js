@@ -3,6 +3,7 @@ import { createReadStream } from 'fs';
 import { fileURLToPath } from 'url';
 import { join, dirname } from 'path';
 
+// 设置帧率，单位为毫秒
 const intervalNum = 100;
 
 // 获取当前模块的文件路径
