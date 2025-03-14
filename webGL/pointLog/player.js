@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 // 日志文件路径
-const logFilePath = join('marker_data_2025-03-13_23-55-36.log');
+const logFilePath = join('blenderSim.log');
 
 // 读取日志文件内容
 const logData = readFileSync(logFilePath, 'utf-8').split('\n');
@@ -27,6 +27,9 @@ logData.forEach(line => {
         frames[FrameNo].push(...positions);
     }
 });
+
+// 配置变量，控制是否重复播放
+const repeat = true; // 设置为 true 以启用重复播放，设置为 false 以禁用重复播放
 
 wss.on('connection', (ws) => {
     console.log('Client connected');
@@ -63,15 +66,26 @@ wss.on('connection', (ws) => {
             };
 
             ws.send(JSON.stringify(frameObject));
+            frameIndex++;
         } else {
             console.log('All frames sent');
-            ws.close();
+            if (repeat) {
+                frameIndex = 0; // 重新开始播放
+            } else {
+                ws.close();
+            }
         }
-        frameIndex++;
-        setTimeout(sendFrame, 100); // 每100毫秒发送一帧
     };
 
-    sendFrame();
+    // 使用 setInterval 来确保帧率一致
+    const intervalId = setInterval(() => {
+        if (frameIndex >= frameNumbers.length && !repeat) {
+            clearInterval(intervalId);
+            ws.close();
+        } else {
+            sendFrame();
+        }
+    }, 100); // 每100毫秒发送一帧
 });
 
 wss.on('close', () => {
