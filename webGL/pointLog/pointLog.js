@@ -1,13 +1,20 @@
 import WebSocket from 'ws';
 import { createWriteStream } from 'fs';
+import { fileURLToPath } from 'url';
+import { join, dirname } from 'path';
 import { format } from 'date-fns';
+
+// 获取当前模块的文件路径
+const __filename = fileURLToPath(import.meta.url);
+// 获取当前模块的目录路径
+const __dirname = dirname(__filename);
 
 // 生成唯一的文件名
 const timestamp = format(new Date(), 'yyyy-MM-dd_HH-mm-ss');
 const fileName = `marker_data_${timestamp}.log`;
 
 // 创建文件流以写入数据
-const fileStream = createWriteStream(fileName, { flags: 'w' }); // 使用 'w' 标志创建新文件
+const fileStream = createWriteStream(join(__dirname, fileName), { flags: 'w' }); // 使用 'w' 标志创建新文件
 
 // 帧计数器
 let frameCounter = 0;

@@ -1,10 +1,15 @@
 import { WebSocketServer } from 'ws';
 import { readFileSync } from 'fs';
-import { join } from 'path';
-import { interval } from 'date-fns';
+import { fileURLToPath } from 'url';
+import { join, dirname } from 'path';
 
-// 日志文件路径
-const logFilePath = join('blenderSim.log');
+// 获取当前模块的文件路径
+const __filename = fileURLToPath(import.meta.url);
+// 获取当前模块的目录路径
+const __dirname = dirname(__filename);
+
+// 使用 __dirname 获取当前脚本文件所在的目录
+const logFilePath = join(__dirname, 'blenderSim.log');
 
 // 读取日志文件内容
 const logData = readFileSync(logFilePath, 'utf-8').split('\n');
