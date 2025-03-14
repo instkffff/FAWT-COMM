@@ -1,6 +1,7 @@
 import { WebSocketServer } from 'ws';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { interval } from 'date-fns';
 
 // 日志文件路径
 const logFilePath = join('blenderSim.log');
@@ -13,6 +14,8 @@ const wss = new WebSocketServer({ port: 8080 });
 
 // 存储每帧的数据
 const frames = {};
+
+const intervalNum = 10;
 
 logData.forEach(line => {
     if (line.trim() !== '') { // 确保不是空行
@@ -85,7 +88,7 @@ wss.on('connection', (ws) => {
         } else {
             sendFrame();
         }
-    }, 100); // 每100毫秒发送一帧
+    }, intervalNum); // 每100毫秒发送一帧
 });
 
 wss.on('close', () => {
