@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import { join, dirname } from 'path';
 
 // 设置帧率，单位为毫秒
-const intervalNum = 100;
+const intervalNum = 10;
 
 // 获取当前模块的文件路径
 const __filename = fileURLToPath(import.meta.url);
@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // 使用 __dirname 获取当前脚本文件所在的目录
-const logFilePath = join(__dirname, 'blenderSim.log');
+const logFilePath = join(__dirname, 'marker_data_2025-03-15_20-35-33.log');
 
 // 创建WebSocket服务器
 const wss = new WebSocketServer({ port: 8080 });

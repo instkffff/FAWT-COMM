@@ -61,3 +61,11 @@ fileStream.on('finish', () => {
 fileStream.on('error', (error) => {
     console.error('File stream error:', error);
 });
+
+// 监听SIGINT信号（Ctrl+C）
+process.on('SIGINT', () => {
+    console.log('Received SIGINT. Closing WebSocket connection and file stream...');
+    ws.close();
+    fileStream.end();
+    process.exit(0);
+});

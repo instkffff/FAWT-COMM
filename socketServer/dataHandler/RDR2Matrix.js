@@ -2,9 +2,15 @@ import { createMatrix, fill36x36MatrixWith3x3Matrices, matrixToCSV, fill12x12Mat
 import { arrayTo3x3Matrix } from "../../matrixFill/triMatrix.js";
 import { parsePacket } from '../../Packet/PacketParse.js';
 import fs from 'fs/promises'; // 使用 fs/promises 模块
-import path from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import { clients, rpmMatrixCsv, TSOKMatrixCSV } from '../shared.js';
+
+// 获取当前模块的文件路径
+const __filename = fileURLToPath(import.meta.url);
+// 获取当前模块的目录路径
+const __dirname = dirname(__filename);
 
 const matrix36x36F = createMatrix(36, 36);
 const matrix36x36L = createMatrix(36, 36);
@@ -59,8 +65,8 @@ function RDR2MatrixCSV(DataPacket, clientId, matrix1, matrix2) {
 async function writeToRDRHTML(rpmMatrixCsv) {
     const htmlTableF = await csvToHtmlTable(rpmMatrixCsv[0]);
     const htmlTableL = await csvToHtmlTable(rpmMatrixCsv[1]);
-    const RDRHTMLPathF = path.join('html', 'RDRF.html');
-    const RDRHTMLPathL = path.join('html', 'RDRL.html');
+    const RDRHTMLPathF = join(__dirname, '../html/RDRF.html');
+    const RDRHTMLPathL = join(__dirname, '../html/RDRL.html');
     try {
         await fs.writeFile(RDRHTMLPathF, htmlTableF); // 使用 await 等待文件写入完成
         await fs.writeFile(RDRHTMLPathL, htmlTableL);

@@ -11,24 +11,37 @@ import { TSOK2Matrix, writeToTSOKHTML, matrix12x12 } from './dataHandler/TSOK2Ma
 const PORT = 3000; // TCP 端口
 const HTTP_PORT = 3001; // HTTP 端口
 
+const test = true;
+
 const server = createServer((socket) => {
     let clientId = null;
 
+    if(test === false){
+        // 获取客户端的 IP 地址最后一位
+        const clientAddress = socket.remoteAddress;
+        clientId = clientAddress.split('.').pop();
+        clients[clientId] = socket;
+        console.log(`Client ${clientId} connected`);
+    }
 
-    // 获取客户端的 IP 地址最后一位
-    const clientAddress = socket.remoteAddress;
-    clientId = clientAddress.split('.').pop();
-    clients[clientId] = socket;
-    console.log(`Client ${clientId} connected`);
+    
 
     socket.on('data', (data) => {
 
         const Data = data 
 
         if (Data.length < 4) {
+
+            if(test === true) {
+                clientId = Data.toString().trim();
+                clients[clientId] = socket;
+                console.log(`Client ${clientId} connected`);
+            }
+
             /* clientId = Data.toString().trim();
             clients[clientId] = socket;
             console.log(`Client ${clientId} connected`); */
+
         } else {
             const packet = parsePacket(Data);
             console.log(clientId, packet)

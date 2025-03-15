@@ -1,9 +1,15 @@
 import { createMatrix, fill36x36MatrixWith3x3Matrices, matrixToCSV, fill12x12MatrixWithNumbers } from "../../matrixFill/matrixFill.js";
 import { parsePacket } from '../../Packet/PacketParse.js';
 import fs from 'fs/promises'; // 使用 fs/promises 模块
-import path from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import { clients, rpmMatrixCsv, TSOKMatrixCSV } from '../shared.js';
+
+// 获取当前模块的文件路径
+const __filename = fileURLToPath(import.meta.url);
+// 获取当前模块的目录路径
+const __dirname = dirname(__filename);
 
 const matrix12x12 = createMatrix(12, 12);
 
@@ -36,7 +42,7 @@ async function csvToHtmlTable(csv) {
 async function writeToTSOKHTML(TSOKMatrixCSV) {
     const TSOKcsv = await csvToHtmlTable(TSOKMatrixCSV[0]);
 
-    const TSOKPath = path.join('html', 'TSOK.html');
+    const TSOKPath = join(__dirname, '../html/TSOK.html');
     try {
         await fs.writeFile(TSOKPath, TSOKcsv); // 使用 await 等待文件写入完成
         console.log('Update TSOK');

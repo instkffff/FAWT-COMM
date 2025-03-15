@@ -4,10 +4,16 @@ import { clients, rpmMatrixCsv, TSOKMatrixCSV } from './shared.js';
 import { parsePacket } from '../Packet/PacketParse.js';
 import { generatorPacket } from '../Packet/PacketGenerator.js';
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { RDR2Matrix, RDR2MatrixCSV, writeToRDRHTML } from './dataHandler/RDR2Matrix.js';
 import { TSOK2Matrix, writeToTSOKHTML } from './dataHandler/TSOK2Matrix.js';
 import { createMatrix, fill36x36MatrixWith3x3Matrices, matrixToCSV, fill12x12MatrixWithNumbers  } from '../matrixFill/matrixFill.js';
+
+// 获取当前模块的文件路径
+const __filename = fileURLToPath(import.meta.url);
+// 获取当前模块的目录路径
+const __dirname = dirname(__filename);
 
 const httpServer = _createServer((req, res) => {
     if (req.method === 'POST' && req.url === '/send') {
@@ -47,7 +53,7 @@ async function handleGetRDR(req, res) {
     await writeToRDRHTML(rpmMatrixCsv);
     await writeToTSOKHTML(TSOKMatrixCSV);
     try {
-        const filePath = join('./html', 'RDR.html');
+        const filePath = join(__dirname, '/html/RDR.html');
         const fileContent = readFileSync(filePath, 'utf8');
         sendResponse(res, 200, fileContent);
     } catch (error) {
@@ -57,7 +63,7 @@ async function handleGetRDR(req, res) {
 
 async function handleGetRDRL(req, res) {
     try {
-        const filePath = join('./html', 'RDRL.html');
+        const filePath = join(__dirname, '/html/RDRL.html');
         const fileContent = readFileSync(filePath, 'utf8');
         sendResponse(res, 200, fileContent);
     } catch (error) {
@@ -67,7 +73,7 @@ async function handleGetRDRL(req, res) {
 
 async function handleGetRDRF(req, res) {
     try {
-        const filePath = join('./html', 'RDRF.html');
+        const filePath = join(__dirname, '/html/RDRF.html');
         const fileContent = readFileSync(filePath, 'utf8');
         sendResponse(res, 200, fileContent);
     } catch (error) {
@@ -77,7 +83,7 @@ async function handleGetRDRF(req, res) {
 
 async function handleGetTSOK(req, res) {
     try {
-        const filePath = join('./html', 'TSOK.html');
+        const filePath = join(__dirname, '/html/TSOK.html');
         const fileContent = readFileSync(filePath, 'utf8');
         sendResponse(res, 200, fileContent);
     } catch (error) {

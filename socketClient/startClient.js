@@ -1,10 +1,15 @@
 import { createSocketClient } from './socketClient.js';
 import fs from 'fs';
 import { handleMessage } from './messageHandlers.js';
-import path from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
+// 获取当前模块的文件路径
+const __filename = fileURLToPath(import.meta.url);
+// 获取当前模块的目录路径
+const __dirname = dirname(__filename);
 
-const configFilePath = path.join('config.json');
+const configFilePath = join(__dirname,'config.json');
 
 // Read configuration from file
 // const configFilePath = 'config.json';
