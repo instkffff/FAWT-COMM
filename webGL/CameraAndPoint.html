@@ -20,25 +20,72 @@
             overflow: hidden; /* 隐藏滚动条 */
         }
         #webglContainer { 
-            flex: 7; /* 占比8 */
+            flex: 7; /* 初始占比7 */
+            min-height: 200px; /* 最小高度限制 */
             overflow: hidden; /* 隐藏滚动条 */
+            position: relative;
         }
         #dataTableContainer { 
-            flex: 2; /* 占比2 */
+            flex: 2; /* 初始占比2 */
+            min-height: 100px; /* 最小高度限制 */
             overflow: hidden; /* 隐藏滚动条 */
         }
         #draggableDivider {
-            height: 5px;
+            height: 8px; /* 增加高度使其更容易点击 */
             background-color: #ccc;
             cursor: ns-resize; /* 垂直拖拽光标 */
-            pointer-events: auto; /* 确保拖拽区域可以捕获事件 */
+            position: relative;
+            transition: background-color 0.2s;
+        }
+        #draggableDivider:hover {
+            background-color: #999; /* 悬停时变色 */
+        }
+        #draggableDivider::after {
+            content: "≡"; /* 添加拖动指示符 */
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #666;
         }
         #refreshButton {
-            margin: 10px;
-            height: 40px;
-            font-size: 16px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 15px;
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
             cursor: pointer;
-
+            z-index: 100;
+            transition: background-color 0.3s;
+        }
+        #refreshButton:hover {
+            background-color: #f2f2f2;
+        }
+        .dragging #draggableDivider {
+            background-color: #666; /* 拖动时的颜色 */
+        }
+        
+        /* 添加以下样式 */
+        body.dragging {
+            cursor: ns-resize !important;
+            user-select: none;
+        }
+        
+        body.dragging iframe {
+            pointer-events: none;
+        }
+        
+        #draggableDivider {
+            height: 10px; /* 进一步增加高度使其更容易点击 */
+            background-color: #ccc;
+            cursor: ns-resize;
+            position: relative;
+            transition: background-color 0.2s;
+            z-index: 10; /* 确保分隔条在最上层 */
         }
     </style>
 </head>
@@ -46,12 +93,12 @@
     
     <div id="webglContainer">
         <iframe src="cameraWsReal.html"></iframe>
+        <button id="refreshButton">刷新</button>
     </div>
     <div id="draggableDivider"></div>
     <div id="dataTableContainer">
         <iframe src="point.html"></iframe>
     </div>
-    <button id="refreshButton">Refresh</button>
 
     <script>
         // 获取容器元素
@@ -59,39 +106,56 @@
         const dataTableContainer = document.getElementById('dataTableContainer');
         const draggableDivider = document.getElementById('draggableDivider');
         const refreshButton = document.getElementById('refreshButton');
+        const body = document.body;
 
         let isDragging = false;
-        let startY;
-        let startWebglHeight;
-        let startDataTableHeight;
+        
+        // 初始比例设置
+        const initialWebglRatio = 0.78; // 78%
+        const initialDataRatio = 0.22; // 22%
+        
+        // 设置初始比例
+        webglContainer.style.flex = initialWebglRatio;
+        dataTableContainer.style.flex = initialDataRatio;
 
         draggableDivider.addEventListener('mousedown', (e) => {
             isDragging = true;
-            startY = e.clientY;
-            startWebglHeight = webglContainer.offsetHeight;
-            startDataTableHeight = dataTableContainer.offsetHeight;
-            document.body.style.cursor = 'ns-resize'; // 改变鼠标光标
+            body.classList.add('dragging');
+            e.preventDefault(); // 防止文本选择
+            
+            // 禁用iframe内容，防止拖拽时的干扰
+            document.querySelectorAll('iframe').forEach(iframe => {
+                iframe.style.pointerEvents = 'none';
+            });
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-
-            const deltaY = e.clientY - startY;
-            const newWebglHeight = startWebglHeight + deltaY;
-            const newDataTableHeight = startDataTableHeight - deltaY;
-
-            // 设置新的高度
-            webglContainer.style.flex = `0 0 ${newWebglHeight}px`;
-            dataTableContainer.style.flex = `0 0 ${newDataTableHeight}px`;
-
-            // 确保 iframe 占满容器
-            webglContainer.querySelector('iframe').style.height = '100%';
-            dataTableContainer.querySelector('iframe').style.height = '100%';
+            
+            // 直接使用鼠标在视口中的位置计算比例
+            const viewportHeight = window.innerHeight;
+            const dividerHeight = draggableDivider.offsetHeight;
+            const mouseRatio = e.clientY / viewportHeight;
+            
+            // 限制比例范围
+            const webglRatio = Math.max(0.2, Math.min(0.8, mouseRatio));
+            const dataRatio = 1 - webglRatio - (dividerHeight / viewportHeight);
+            
+            // 应用新比例
+            webglContainer.style.flex = webglRatio.toString();
+            dataTableContainer.style.flex = dataRatio.toString();
         });
 
         document.addEventListener('mouseup', () => {
-            isDragging = false;
-            document.body.style.cursor = 'default'; // 恢复默认鼠标光标
+            if (isDragging) {
+                isDragging = false;
+                body.classList.remove('dragging');
+                
+                // 恢复iframe内容交互
+                document.querySelectorAll('iframe').forEach(iframe => {
+                    iframe.style.pointerEvents = 'auto';
+                });
+            }
         });
 
         // 添加刷新按钮点击事件
