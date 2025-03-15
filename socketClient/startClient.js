@@ -4,7 +4,7 @@ import { handleMessage } from './messageHandlers.js';
 import path from 'path';
 
 
-const configFilePath = path.join('socketClient', 'config.json');
+const configFilePath = path.join('config.json');
 
 // Read configuration from file
 // const configFilePath = 'config.json';
