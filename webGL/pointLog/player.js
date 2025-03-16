@@ -12,10 +12,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // 使用 __dirname 获取当前脚本文件所在的目录
-const logFilePath = join(__dirname, 'marker_data_2025-03-16_13-22-26.log');
+const logFilePath = join(__dirname, 'blenderSim.log');
 
 // 创建WebSocket服务器
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 8765 });
 
 // 存储每帧的数据
 const frames = {};
