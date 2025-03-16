@@ -4,7 +4,7 @@ import { writeFile } from 'fs';
 function generateConfig(numClients) {
     const config = [];
 
-    for (let i = 1; i <= numClients; i++) {
+    for (let i = 101; i <= numClients; i++) {
         config.push({
             serverIP: "127.0.0.1",
             serverPort: 3000,
@@ -17,7 +17,7 @@ function generateConfig(numClients) {
 }
 
 // 生成配置文件
-const numClients = 144; // 你可以根据需要调整客户端的数量
+const numClients = 244; // 你可以根据需要调整客户端的数量
 const config = generateConfig(numClients);
 
 // 将配置写入文件
