@@ -17,13 +17,13 @@ const server = createServer((socket) => {
     let clientId = null;
 
     // 获取客户端的 IP 地址最后一位
-    const clientAddress = socket.remoteAddress;
-    clientId = clientAddress.split('.').pop();
-    clients[clientId] = socket;
-    console.log(`Client ${clientId} connected`);
+    
 
     if(test === false){
-        
+        const clientAddress = socket.remoteAddress;
+        clientId = clientAddress.split('.').pop();
+        clients[clientId] = socket;
+        console.log(`Client ${clientId} connected`);
     }
 
     
