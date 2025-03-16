@@ -8,7 +8,7 @@ function createMatrix(rows, cols) {
 
 function fill36x36MatrixWith3x3Matrices(matrix36x36, id, matrix) {
     const row = Math.floor((id - 100) / 12) * 3;
-    const col = ((id - 1) % 12) * 3;
+    const col = ((id - 100) % 12) * 3;
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             matrix36x36[row + i][col + j] = matrix[i][j];
@@ -18,7 +18,7 @@ function fill36x36MatrixWith3x3Matrices(matrix36x36, id, matrix) {
 
 function fill12x12MatrixWithNumbers(matrix, id, num) {
     const row = Math.floor((id - 100) / 12);
-    const col = (id - 1) % 12;
+    const col = (id - 100) % 12;
     matrix[row][col] = num;
 }
 

@@ -8,10 +8,10 @@ import { clients, rpmMatrixCsv, TSOKMatrixCSV } from './shared.js';
 import { RDR2Matrix, RDR2MatrixCSV, writeToRDRHTML } from './dataHandler/RDR2Matrix.js';
 import { TSOK2Matrix, writeToTSOKHTML, matrix12x12 } from './dataHandler/TSOK2Matrix.js';
 
-const PORT = 1000; // TCP 端口
+const PORT = 3000; // TCP 端口
 const HTTP_PORT = 3001; // HTTP 端口
 
-const test = false;
+const test = true;
 
 const server = createServer((socket) => {
     let clientId = null;
