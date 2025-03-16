@@ -8,20 +8,22 @@ import { clients, rpmMatrixCsv, TSOKMatrixCSV } from './shared.js';
 import { RDR2Matrix, RDR2MatrixCSV, writeToRDRHTML } from './dataHandler/RDR2Matrix.js';
 import { TSOK2Matrix, writeToTSOKHTML, matrix12x12 } from './dataHandler/TSOK2Matrix.js';
 
-const PORT = 3000; // TCP 端口
+const PORT = 1000; // TCP 端口
 const HTTP_PORT = 3001; // HTTP 端口
 
-const test = true;
+const test = false;
 
 const server = createServer((socket) => {
     let clientId = null;
 
+    // 获取客户端的 IP 地址最后一位
+    const clientAddress = socket.remoteAddress;
+    clientId = clientAddress.split('.').pop();
+    clients[clientId] = socket;
+    console.log(`Client ${clientId} connected`);
+
     if(test === false){
-        // 获取客户端的 IP 地址最后一位
-        const clientAddress = socket.remoteAddress;
-        clientId = clientAddress.split('.').pop();
-        clients[clientId] = socket;
-        console.log(`Client ${clientId} connected`);
+        
     }
 
     

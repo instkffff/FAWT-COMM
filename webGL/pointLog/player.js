@@ -12,7 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // 使用 __dirname 获取当前脚本文件所在的目录
-const logFilePath = join(__dirname, 'marker_data_2025-03-15_20-35-33.log');
+const logFilePath = join(__dirname, 'marker_data_2025-03-16_13-22-26.log');
 
 // 创建WebSocket服务器
 const wss = new WebSocketServer({ port: 8080 });
@@ -117,7 +117,7 @@ stream.on('end', () => {
             } else {
                 sendFrame();
             }
-        }, intervalNum); // 每100毫秒发送一帧
+        }, intervalNum);
     });
 
     wss.on('close', () => {

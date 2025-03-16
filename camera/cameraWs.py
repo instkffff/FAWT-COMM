@@ -17,7 +17,7 @@ class Config:
     DEFAULT_SERVER_IP: str = '10.1.1.198'
     WS_HOST: str = 'localhost'
     WS_PORT: int = 8080
-    DATA_SEND_INTERVAL: float = 0.00
+
 
 class NokovCamera:
     def __init__(self):
@@ -102,17 +102,21 @@ class WebSocketServer:
     def __init__(self, camera: NokovCamera):
         self.camera = camera
         self.server = None
+        self.clients = set()  # 用于存储所有连接的客户端
         
     async def handler(self, websocket, path):
+        # 将新连接的客户端添加到集合中
+        self.clients.add(websocket)
         try:
             while True:
                 if self.camera.latest_frame_data:
                     await websocket.send(json.dumps(self.camera.latest_frame_data))
-                await asyncio.sleep(Config.DATA_SEND_INTERVAL)
+                await asyncio.sleep(0.001)  # 短暂休眠以避免占用过多CPU
         except websockets.ConnectionClosed:
             logging.info("WebSocket connection closed")
-        except Exception as e:
-            logging.error(f"WebSocket error: {str(e)}")
+        finally:
+            # 当客户端断开连接时，从集合中移除
+            self.clients.remove(websocket)
 
     async def start(self):
         self.server = await websockets.serve(

@@ -9,7 +9,7 @@ async function sendData() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                id: "1",
+                id: "101",
                 msg: {
                     header: "DT",
                     type: "DT",
