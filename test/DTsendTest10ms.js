@@ -36,4 +36,4 @@ const sendBatch = () => {
 
 const intervalId = setInterval(() => {
   sendBatch();
-}, 10); // 每10毫秒发送一次144个请求
+}, 100); // 每10毫秒发送一次144个请求
