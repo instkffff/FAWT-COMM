@@ -15,7 +15,14 @@ const __filename = fileURLToPath(import.meta.url);
 // 获取当前模块的目录路径
 const __dirname = dirname(__filename);
 
+const DebugMode = true;
+
 const httpServer = _createServer((req, res) => {
+    if (!DebugMode && ['/RDR', '/RDRL', '/RDRF', '/TSOK', '/TSRST'].includes(req.url)) {
+        sendResponse(res, 403, 'Forbidden');
+        return;
+    }
+
     if (req.method === 'POST' && req.url === '/send') {
         handlePostSend(req, res);
     } else if (req.method === 'GET' && req.url === '/RDR') {

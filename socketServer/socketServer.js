@@ -1,6 +1,6 @@
 // socketServer.js
 import { createServer } from 'net';
-import { httpServer } from './httpServer.js';
+import { httpServer } from './httpserver.js';
 import { parsePacket } from '../Packet/PacketParse.js';
 import { generatorPacket } from '../Packet/PacketGenerator.js';
 import { clients, rpmMatrixCsv, TSOKMatrixCSV } from './shared.js';
@@ -13,28 +13,30 @@ const HTTP_PORT = 3003; // HTTP 端口
 
 const test = true;
 
+const DebugMode = true;
+
 const server = createServer((socket) => {
     let clientId = null;
 
     // 获取客户端的 IP 地址最后一位
-    
 
-    if(test === false){
+
+    if (test === false) {
         const clientAddress = socket.remoteAddress;
         clientId = clientAddress.split('.').pop();
         clients[clientId] = socket;
         console.log(`Client ${clientId} connected`);
     }
 
-    
+
 
     socket.on('data', (data) => {
 
-        const Data = data 
+        const Data = data
 
         if (Data.length < 4) {
 
-            if(test === true) {
+            if (test === true) {
                 clientId = Data.toString().trim();
                 clients[clientId] = socket;
                 console.log(`Client ${clientId} connected`);
@@ -45,7 +47,21 @@ const server = createServer((socket) => {
             console.log(`Client ${clientId} connected`); */
 
         } else {
-            const packet = parsePacket(Data);
+
+            if (DebugMode === true) {
+                const packet = parsePacket(Data);
+                console.log(clientId, packet)
+                if (packet.header === 'RDR') {
+                    const matrix36CSV = RDR2MatrixCSV(packet, clientId, rpmMatrixCsv[3], rpmMatrixCsv[2]);
+                    rpmMatrixCsv[0] = matrix36CSV.rpmMatrixF;
+                    rpmMatrixCsv[1] = matrix36CSV.rpmMatrixL;
+                } else if (packet.header === 'TSOK') {
+                    TSOKMatrixCSV[0] = TSOK2Matrix(clientId, TSOKMatrixCSV[1])
+                }
+
+            }
+
+            /* const packet = parsePacket(Data);
             console.log(clientId, packet)
             if (packet.header === 'RDR') {
                 const matrix36CSV = RDR2MatrixCSV(packet, clientId, rpmMatrixCsv[3], rpmMatrixCsv[2]); 
@@ -53,7 +69,7 @@ const server = createServer((socket) => {
                 rpmMatrixCsv[1] = matrix36CSV.rpmMatrixL;
             } else if (packet.header === 'TSOK') {
                 TSOKMatrixCSV[0] = TSOK2Matrix(clientId, TSOKMatrixCSV[1])
-            }
+            } */
         }
     });
 
