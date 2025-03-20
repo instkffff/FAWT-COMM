@@ -6,8 +6,6 @@ import cluster from 'cluster';
 import { randomInt } from 'crypto';
 
 const numCPUs = cpus().length;
-const requestsPerSecond = 2000;
-const requestsPerWorker = Math.ceil(requestsPerSecond / numCPUs);
 const requestsPerInterval = 50; // 每10毫秒发送100个请求
 const intervalTime = 10; // 10毫秒
 const url = 'http://localhost:3000';
