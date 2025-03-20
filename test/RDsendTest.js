@@ -1,5 +1,5 @@
-for (let id = 1; id <= 144; id++) {
-  fetch('http://localhost:3001/send', {
+for (let id = 101; id <= 244; id++) {
+  fetch('http://localhost:3003/send', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

@@ -10,7 +10,7 @@ function generateRandomData(length) {
   return data;
 }
 
-for (let id = 1; id <= 144; id++) {
+for (let id = 101; id <= 244; id++) {
   fetch('http://localhost:3001/send', {
     method: 'POST',
     headers: {

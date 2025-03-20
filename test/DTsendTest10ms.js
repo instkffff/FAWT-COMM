@@ -12,7 +12,7 @@ function generateRandomData(length) {
 
 const sendBatch = () => {
   for (let id = 101; id <= 244; id++) {
-    fetch('http://localhost:3001/send', {
+    fetch('http://localhost:3003/send', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
