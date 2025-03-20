@@ -9,7 +9,7 @@ import { TSOK2Matrix, writeToTSOKHTML, matrix12x12 } from './dataHandler/TSOK2Ma
 import cluster from 'cluster';
 import os from 'os';
 
-const PORT = 3000; // TCP 端口
+const PORT = 1000; // TCP 端口
 const HTTP_PORT = 3001; // HTTP 端口
 
 const test = true;

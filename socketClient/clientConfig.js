@@ -7,7 +7,7 @@ function generateConfig(numClients) {
     for (let i = 101; i <= numClients; i++) {
         config.push({
             serverIP: "127.0.0.1",
-            serverPort: 3000,
+            serverPort: 1000,
             clientID: i,
             reconnectInterval: 5000
         });
