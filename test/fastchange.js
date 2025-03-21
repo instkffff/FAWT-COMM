@@ -13,7 +13,7 @@ function sendFanControlRequest(obj) {
   };
 
   // Send POST request
-  return fetch('http://localhost:3001/send', {
+  return fetch('http://localhost:3003/send', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

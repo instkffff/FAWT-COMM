@@ -3,7 +3,7 @@ let executionCount = 0;
 async function sendData() {
     try {
         const sineValues = getSineValue(executionCount);
-        const response = await fetch('http://localhost:3001/send', {
+        const response = await fetch('http://localhost:3003/send', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
