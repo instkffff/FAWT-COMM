@@ -35,6 +35,7 @@ const server = createServer((socket) => {
             const packet = parsePacket(Data);
             console.log(clientId, packet);
             packet.clientId = clientId;
+            delete packet.checksum;
             // Send the parsed packet via WebSocket
             sendPacketToWebSocket(packet);
         }
