@@ -1,8 +1,7 @@
-// serverFinal.js
 import { createServer } from 'net';
 import { httpServer } from './httpFinal.js';
 import { parsePacket } from '../Packet/PacketParse.js';
-import { clients, rpmMatrixCsv, TSOKMatrixCSV } from './shared.js';
+import { clients } from './shared.js';
 import { WebSocketServer } from 'ws'; // 确保 ws 模块正确导入
 
 const PORT = 1000; // TCP 端口
