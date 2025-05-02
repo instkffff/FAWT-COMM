@@ -2,7 +2,7 @@ import { markerSetGenerator } from './wsSim.js';
 import { WebSocketServer } from 'ws';
 
 // 创建 WebSocket 服务器，监听端口 8080
-const wss = new WebSocketServer({ port: 8080 });
+const wss = new WebSocketServer({ port: 8765 });
 
 // 示例用法
 const generator = markerSetGenerator([
@@ -33,4 +33,4 @@ wss.on('connection', (ws) => {
   });
 });
 
-console.log(`WebSocket server is running on ws://localhost:8080`);
+console.log(`WebSocket server is running on ws://localhost:8765`);

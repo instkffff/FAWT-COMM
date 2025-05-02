@@ -8,7 +8,7 @@ const PORT = 1000; // TCP 端口
 const HTTP_PORT = 3003; // HTTP 端口
 const WS_PORT = 1234; // WebSocket 端口
 
-const test = true;
+const test = process.env.TEST === 'true';
 
 const server = createServer((socket) => {
     let clientId = null;

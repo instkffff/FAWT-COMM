@@ -16,7 +16,7 @@ logging.basicConfig(
 class Config:
     DEFAULT_SERVER_IP: str = '10.1.1.198'
     WS_HOST: str = 'localhost'
-    WS_PORT: int = 8080
+    WS_PORT: int = 8765
 
 
 class NokovCamera:
