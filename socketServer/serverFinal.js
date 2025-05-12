@@ -8,13 +8,15 @@ const PORT = 1000; // TCP 端口
 const HTTP_PORT = 3003; // HTTP 端口
 const WS_PORT = 1234; // WebSocket 端口
 
-const test = process.env.TEST === 'true';
+console.log(process.argv[4]);
+
+const TEST = process.argv[4] === 'true';
 
 const server = createServer((socket) => {
     let clientId = null;
 
     // 获取客户端的 IP 地址最后一位
-    if (test === false) {
+    if (TEST === false) {
         const clientAddress = socket.remoteAddress;
         clientId = clientAddress.split('.').pop();
         clients[clientId] = socket;
@@ -25,7 +27,7 @@ const server = createServer((socket) => {
         const Data = data;
 
         if (Data.length < 4) {
-            if (test === true) {
+            if (TEST === true) {
                 clientId = Data.toString().trim();
                 clients[clientId] = socket;
                 console.log(`Client ${clientId} connected`);
