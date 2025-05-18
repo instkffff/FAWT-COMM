@@ -51,6 +51,7 @@ function handlePostSend(req, res) {
             const result = sendMessageToClient(id, msg);
             sendResponse(res, 200, { id, msg, status: result ? 'succeed' : 'failed' });
         } catch (error) {
+            const { id, msg } = JSON.parse(body);
             sendResponse(res, 500, { id, msg, status: 'failed', error: error.message });
         }
     });
