@@ -9,18 +9,12 @@ const __dirname = dirname(__filename);
 // 获取当前脚本所在目录
 const currentDir = resolve(__dirname);
 
-console.log('当前路径:', currentDir);
-
 // 检查文件路径
 const uPath = `${currentDir}\\u.json`;
 const vPath = `${currentDir}\\v.json`;
 const wPath = `${currentDir}\\w.json`;
 const outPath = `${currentDir}\\wind.json`;
 
-console.log('u.json 路径:', uPath);
-console.log('v.json 路径:', vPath);
-console.log('w.json 路径:', wPath);
-console.log('输出路径:', outPath);
 
 try {
     // 读取 JSON 文件
