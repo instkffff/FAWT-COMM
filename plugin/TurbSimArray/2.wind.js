@@ -15,10 +15,6 @@ const vPath = `${currentDir}\\v.json`;
 const wPath = `${currentDir}\\w.json`;
 const outPath = `${currentDir}\\wind.json`;
 
-<<<<<<< HEAD:plugin/TurbSimArray/2.wind.js
-=======
-
->>>>>>> 66712827daef4f5f1779d22f8dc0fcb29d587fe0:plugin/TurbSimArray/wind.js
 try {
     // 读取 JSON 文件
     const u = JSON.parse(readFileSync(uPath, 'utf8')).matrices;
