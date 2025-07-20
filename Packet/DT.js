@@ -48,7 +48,7 @@ function DTGenerateDataPacket(header, data) {
 // 数据解析器函数
 function DTParseDataPacket(buffer) {
     if (buffer.length !== 22) {
-        throw new Error("Buffer must be 22 bytes long.");
+//        throw new Error("Buffer must be 22 bytes long.");
     }
 
     const header = [buffer.readUInt8(0), buffer.readUInt8(1)];

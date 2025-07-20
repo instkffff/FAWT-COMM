@@ -44,7 +44,7 @@ function parseMatrices(data) {
         .split('\n')
         .map(line => line.trim())
         .filter(line => line.length > 0)
-        .slice(8);
+        .slice(7);
 
     const matrices = [];
     let i = 0;
