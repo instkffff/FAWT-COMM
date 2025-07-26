@@ -39,7 +39,7 @@ function sendDataFrame(cmd, pData, dataLen) {
     buffer[4] = 0;
 
     // 计算 CRC 校验码
-    const crc = computeChecksum(buffer.slice(0, totalLength));
+    const crc = computeChecksum(buffer.subarray(0, totalLength));
     buffer[4] = crc;
 
     return buffer;
