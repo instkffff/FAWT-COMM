@@ -61,8 +61,8 @@ port.on('open', () => {
     console.log(`串口 ${portName} 已打开`);
 
     // 构造数据帧
-    const pwmPercentage1 = [64, 64, 64, 64, 64, 64 ]; // 示例数据
-    const frame = sendDataFrame(1, pwmPercentage1, 6); // 构造帧
+    const pwmArray = [64, 64, 64, 64, 64, 64 ]; // 0~255
+    const frame = sendDataFrame(1, pwmArray, 6); // 构造帧
 
     // 发送数据到串口
     port.write(frame, (err) => {
